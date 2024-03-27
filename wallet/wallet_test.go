@@ -2,6 +2,7 @@ package wallet
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -22,11 +23,7 @@ func (s StubWallet) Wallets() ([]Wallet, error) {
 
 func TestWallet(t *testing.T) {
 	t.Run("given unable to get wallets should return 500 and error message", func(t *testing.T) {
-		e := echo.New()
-		req := httptest.NewRequest(http.MethodGet, "/api/v1/wallets", nil)
-		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-		rec := httptest.NewRecorder()
-		c := e.NewContext(req, rec)
+		c, rec := request(http.MethodGet, "/api/v1/wallets", nil)
 
 		stubError := StubWallet{err: echo.ErrInternalServerError}
 		w := New(stubError)
@@ -39,11 +36,7 @@ func TestWallet(t *testing.T) {
 	})
 
 	t.Run("given user able to getting wallet should return list of wallets", func(t *testing.T) {
-		e := echo.New()
-		req := httptest.NewRequest(http.MethodGet, "/api/v1/wallets", nil)
-		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-		rec := httptest.NewRecorder()
-		c := e.NewContext(req, rec)
+		c, rec := request(http.MethodGet, "/api/v1/wallets", nil)
 
 		timeNow, err := time.Parse(time.RFC3339Nano, "2024-03-25T14:19:00.729237Z")
 		if err != nil {
@@ -78,11 +71,7 @@ func TestWallet(t *testing.T) {
 	})
 
 	t.Run("given user able to getting wallet with filter type Savings should return list of wallets have type Savings", func(t *testing.T) {
-		e := echo.New()
-		req := httptest.NewRequest(http.MethodGet, "/api/v1/wallets?wallet_type=Savings", nil)
-		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-		rec := httptest.NewRecorder()
-		c := e.NewContext(req, rec)
+		c, rec := request(http.MethodGet, "/api/v1/wallets?wallet_type=Savings", nil)
 
 		timeNow, err := time.Parse(time.RFC3339Nano, "2024-03-25T14:19:00.729237Z")
 		if err != nil {
@@ -114,4 +103,13 @@ func TestWallet(t *testing.T) {
 			t.Errorf("expected %v but got %v", want, got)
 		}
 	})
+}
+
+func request(method, path string, body io.Reader) (echo.Context, *httptest.ResponseRecorder) {
+	e := echo.New()
+	req := httptest.NewRequest(method, path, body)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	return c, rec
 }
