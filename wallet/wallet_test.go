@@ -76,4 +76,42 @@ func TestWallet(t *testing.T) {
 			t.Errorf("expected %v but got %v", want, got)
 		}
 	})
+
+	t.Run("given user able to getting wallet with filter type Savings should return list of wallets have type Savings", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodGet, "/api/v1/wallets?wallet_type=Savings", nil)
+		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+
+		timeNow, err := time.Parse(time.RFC3339Nano, "2024-03-25T14:19:00.729237Z")
+		if err != nil {
+			t.Errorf("unable to parse time")
+		}
+		stubWallets := StubWallet{
+			wallet: []Wallet{
+				{ID: 1, UserID: 1, UserName: "John Doe", WalletName: "John's Wallet", WalletType: "Savings", Balance: 100.00, CreatedAt: timeNow},
+				{ID: 2, UserID: 2, UserName: "Jane Doe", WalletName: "Jane's Wallet", WalletType: "Create Card", Balance: 200.00, CreatedAt: timeNow},
+			},
+			err: nil,
+		}
+
+		p := New(stubWallets)
+		p.WalletHandler(c)
+
+		want := []Wallet{
+			{ID: 1, UserID: 1, UserName: "John Doe", WalletName: "John's Wallet", WalletType: "Savings", Balance: 100.00, CreatedAt: timeNow},
+		}
+		gotJson := rec.Body.Bytes()
+		var got []Wallet
+		if err := json.Unmarshal(gotJson, &got); err != nil {
+			t.Errorf("unable to unmarshal response body")
+		}
+		if rec.Code != http.StatusOK {
+			t.Errorf("expected status code %d but got %d", http.StatusOK, rec.Code)
+		}
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("expected %v but got %v", want, got)
+		}
+	})
 }
