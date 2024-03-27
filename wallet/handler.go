@@ -31,6 +31,7 @@ type Err struct {
 //	@Produce		json
 //	@Success		200	{object}	Wallet
 //	@Router			/api/v1/wallets [get]
+//	@Param			wallet_type	query	string	false	"Filter by wallet type"
 //	@Failure		500	{object}	Err
 func (h *Handler) WalletHandler(c echo.Context) error {
 	wallets, err := h.store.Wallets()
