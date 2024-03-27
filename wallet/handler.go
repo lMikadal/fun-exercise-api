@@ -2,6 +2,7 @@ package wallet
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -12,6 +13,7 @@ type Handler struct {
 
 type Storer interface {
 	Wallets() ([]Wallet, error)
+	WalletsByUserID(id int) ([]Wallet, error)
 }
 
 func New(db Storer) *Handler {
@@ -55,5 +57,15 @@ func (h *Handler) WalletHandler(c echo.Context) error {
 }
 
 func (h *Handler) UserWalletHandler(c echo.Context) error {
-	return c.JSON(http.StatusOK, "user wallet handler")
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, Err{Message: "invalid user id"})
+	}
+
+	wallets, err := h.store.WalletsByUserID(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Err{Message: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, wallets)
 }

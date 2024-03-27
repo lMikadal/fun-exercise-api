@@ -21,6 +21,10 @@ func (s StubWallet) Wallets() ([]Wallet, error) {
 	return s.wallet, s.err
 }
 
+func (s StubWallet) WalletsByUserID(id int) ([]Wallet, error) {
+	return s.wallet, s.err
+}
+
 func TestWallet(t *testing.T) {
 	t.Run("given unable to get wallets should return 500 and error message", func(t *testing.T) {
 		c, rec := request(http.MethodGet, "/api/v1/wallets", nil)
@@ -111,5 +115,6 @@ func request(method, path string, body io.Reader) (echo.Context, *httptest.Respo
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
+
 	return c, rec
 }
