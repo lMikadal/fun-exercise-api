@@ -53,3 +53,7 @@ func (h *Handler) WalletHandler(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, filteredWallets)
 }
+
+func (h *Handler) UserWalletHandler(c echo.Context) error {
+	return c.JSON(http.StatusOK, "user wallet handler")
+}
