@@ -25,16 +25,15 @@ type Err struct {
 }
 
 // WalletHandler
-//
-//	@Summary		Get all wallets
-//	@Description	Get all wallets
-//	@Tags			wallet
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	Wallet
-//	@Router			/api/v1/wallets [get]
-//	@Param			wallet_type	query	string	false	"Filter by wallet type"
-//	@Failure		500	{object}	Err
+// @Summary		Get all wallets
+// @Description	Get all wallets
+// @Tags			wallet
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	Wallet
+// @Router			/api/v1/wallets [get]
+// @Param			wallet_type	query	string	false	"Filter by wallet type"
+// @Failure		500	{object}	Err
 func (h *Handler) WalletHandler(c echo.Context) error {
 	wallets, err := h.store.Wallets()
 	if err != nil {
@@ -56,6 +55,17 @@ func (h *Handler) WalletHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, filteredWallets)
 }
 
+// UserWalletHandler
+// @Summary		Get all wallets by user id
+// @Description	Get all wallets by user id
+// @Tags			user
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	Wallet
+// @Router			/api/v1/users/{id}/wallets [get]
+// @Param			id	path	int	true	"User ID"
+// @Failure		500	{object}	Err
+// @Failure		400	{object}	Err
 func (h *Handler) UserWalletHandler(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

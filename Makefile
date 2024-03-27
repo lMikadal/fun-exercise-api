@@ -10,4 +10,7 @@ docker-up:
 docker-down:
 	@docker-compose down
 
-.PHONY: all test docker-up docker-down
+swag:
+	@swag init
+
+.PHONY: all run test docker-up docker-down swag
