@@ -1,8 +1,9 @@
 package wallet
 
 import (
-	"github.com/labstack/echo/v4"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
 )
 
 type Handler struct {
@@ -22,6 +23,7 @@ type Err struct {
 }
 
 // WalletHandler
+//
 //	@Summary		Get all wallets
 //	@Description	Get all wallets
 //	@Tags			wallet
@@ -35,5 +37,18 @@ func (h *Handler) WalletHandler(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Err{Message: err.Error()})
 	}
-	return c.JSON(http.StatusOK, wallets)
+
+	w_type := c.QueryParam("wallet_type")
+	if w_type == "" {
+		return c.JSON(http.StatusOK, wallets)
+	}
+
+	var filteredWallets []Wallet
+	for _, w := range wallets {
+		if w.WalletType == w_type {
+			filteredWallets = append(filteredWallets, w)
+		}
+	}
+
+	return c.JSON(http.StatusOK, filteredWallets)
 }
