@@ -33,11 +33,11 @@ func (s StubWallet) WalletsByUserID(id int) ([]Wallet, error) {
 	return wallets, s.err
 }
 
-func (s StubWallet) CreateWallet(w Wallet) error {
+func (s StubWallet) CreateWallet(w Wallet) (Wallet, error) {
 	wallets := append(s.wallet, w)
 	_ = wallets
 
-	return nil
+	return w, nil
 }
 
 func TestWallet(t *testing.T) {
