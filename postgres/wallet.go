@@ -1,8 +1,9 @@
 package postgres
 
 import (
-	"github.com/KKGo-Software-engineering/fun-exercise-api/wallet"
 	"time"
+
+	"github.com/KKGo-Software-engineering/fun-exercise-api/wallet"
 )
 
 type Wallet struct {
@@ -75,4 +76,15 @@ func (p *Postgres) WalletsByUserID(id int) ([]wallet.Wallet, error) {
 		})
 	}
 	return wallets, nil
+}
+
+func (p *Postgres) CreateWallet(w wallet.Wallet) error {
+	_, err := p.Db.Exec("INSERT INTO user_wallet (user_id, user_name, wallet_name, wallet_type, balance, created_at) VALUES ($1, $2, $3, $4, $5, $6)",
+		w.UserID, w.UserName, w.WalletName, w.WalletType, w.Balance, w.CreatedAt,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

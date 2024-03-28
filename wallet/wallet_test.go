@@ -33,6 +33,13 @@ func (s StubWallet) WalletsByUserID(id int) ([]Wallet, error) {
 	return wallets, s.err
 }
 
+func (s StubWallet) CreateWallet(w Wallet) error {
+	wallets := append(s.wallet, w)
+	_ = wallets
+
+	return nil
+}
+
 func TestWallet(t *testing.T) {
 	t.Run("given unable to get wallets should return 500 and error message", func(t *testing.T) {
 		c, rec := request(http.MethodGet, "/api/v1/wallets", nil)
