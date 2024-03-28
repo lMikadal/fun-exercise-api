@@ -122,7 +122,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "type": "string"
+                            "type": "object"
                         }
                     },
                     "400": {
@@ -162,8 +162,7 @@ const docTemplate = `{
                     "example": "2024-03-25T14:19:00.729237Z"
                 },
                 "id": {
-                    "type": "integer",
-                    "example": 1
+                    "type": "integer"
                 },
                 "user_id": {
                     "type": "integer",

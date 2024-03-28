@@ -78,13 +78,14 @@ func (p *Postgres) WalletsByUserID(id int) ([]wallet.Wallet, error) {
 	return wallets, nil
 }
 
-func (p *Postgres) CreateWallet(w wallet.Wallet) error {
-	_, err := p.Db.Exec("INSERT INTO user_wallet (user_id, user_name, wallet_name, wallet_type, balance, created_at) VALUES ($1, $2, $3, $4, $5, $6)",
+func (p *Postgres) CreateWallet(w wallet.Wallet) (wallet.Wallet, error) {
+
+	row := p.Db.QueryRow("INSERT INTO user_wallet (user_id, user_name, wallet_name, wallet_type, balance, created_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, user_id, user_name, wallet_name, wallet_type, balance, created_at",
 		w.UserID, w.UserName, w.WalletName, w.WalletType, w.Balance, w.CreatedAt,
 	)
-	if err != nil {
-		return err
+	if err := row.Scan(&w.ID, &w.UserID, &w.UserName, &w.WalletName, &w.WalletType, &w.Balance, &w.CreatedAt); err != nil {
+		return wallet.Wallet{}, err
 	}
 
-	return nil
+	return w, nil
 }

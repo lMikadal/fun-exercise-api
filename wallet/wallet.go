@@ -3,7 +3,7 @@ package wallet
 import "time"
 
 type Wallet struct {
-	ID         int       `json:"id" example:"1"`
+	ID         int       `json:"id"`
 	UserID     int       `json:"user_id" example:"1"`
 	UserName   string    `json:"user_name" example:"John Doe"`
 	WalletName string    `json:"wallet_name" example:"John's Wallet"`
