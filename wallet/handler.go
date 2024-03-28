@@ -99,7 +99,6 @@ func (h *Handler) CreateWalletHandler(c echo.Context) error {
 	}
 
 	wallet, err := h.store.CreateWallet(w)
-
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Err{Message: err.Error()})
 	}
