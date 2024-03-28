@@ -59,7 +59,7 @@ func (h *Handler) WalletHandler(c echo.Context) error {
 // UserWalletHandler
 // @Summary		Get all wallets by user id
 // @Description	Get all wallets by user id
-// @Tags			user
+// @Tags			wallet
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	Wallet
@@ -81,6 +81,17 @@ func (h *Handler) UserWalletHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, wallets)
 }
 
+// CreateWalletHandler
+// @Summary		Create wallet
+// @Description	Create wallet
+// @Tags			wallet
+// @Accept			json
+// @Produce		json
+// @Success		201	{string}	string
+// @Router			/api/v1/wallets [post]
+// @Param			wallet	body	Wallet	true	"Wallet object"
+// @Failure		500	{object}	Err
+// @Failure		400	{object}	Err
 func (h *Handler) CreateWalletHandler(c echo.Context) error {
 	w := Wallet{}
 	if err := c.Bind(&w); err != nil {

@@ -63,7 +63,7 @@ paths:
             $ref: '#/definitions/wallet.Err'
       summary: Get all wallets by user id
       tags:
-      - user
+      - wallet
   /api/v1/wallets:
     get:
       consumes:
@@ -86,6 +86,35 @@ paths:
           schema:
             $ref: '#/definitions/wallet.Err'
       summary: Get all wallets
+      tags:
+      - wallet
+    post:
+      consumes:
+      - application/json
+      description: Create wallet
+      parameters:
+      - description: Wallet object
+        in: body
+        name: wallet
+        required: true
+        schema:
+          $ref: '#/definitions/wallet.Wallet'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/wallet.Err'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/wallet.Err'
+      summary: Create wallet
       tags:
       - wallet
 swagger: "2.0"
