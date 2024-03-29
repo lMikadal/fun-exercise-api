@@ -105,3 +105,7 @@ func (h *Handler) CreateWalletHandler(c echo.Context) error {
 
 	return c.JSON(http.StatusCreated, wallet)
 }
+
+func (h *Handler) UpdateWalletHandler(c echo.Context) error {
+	return c.JSON(http.StatusOK, nil)
+}

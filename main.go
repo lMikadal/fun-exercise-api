@@ -33,5 +33,6 @@ func main() {
 	e.GET("/api/v1/wallets", handler.WalletHandler)
 	e.GET("/api/v1/users/:id/wallets", handler.UserWalletHandler)
 	e.POST("/api/v1/wallets", handler.CreateWalletHandler)
+	e.PUT("/api/v1/wallets/:id", handler.UpdateWalletHandler)
 	e.Logger.Fatal(e.Start(":1323"))
 }
