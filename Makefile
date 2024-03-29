@@ -1,3 +1,5 @@
+DOCKER_TAG = go-fun-exercise
+
 all:
 	@go run main.go
 
@@ -13,4 +15,10 @@ docker-down:
 swag:
 	@swag init
 
-.PHONY: all run test docker-up docker-down swag
+docker-build:
+	@docker build -t $(DOCKER_TAG):latest .
+
+docker-run:
+	docker run $(DOCKER_TAG)
+
+.PHONY: all run test docker-up docker-down swag docker-build docker-run
