@@ -92,11 +92,18 @@ func (p *Postgres) CreateWallet(w wallet.Wallet) error {
 }
 
 func (p *Postgres) UpdateWallet(w wallet.Wallet) error {
-	_, err := p.Db.Exec("UPDATE user_wallet SET user_id = $1, user_name = $2, wallet_name = $3, wallet_type = $4, balance = $5, created_at = $6 WHERE id = $7",
+	row, err := p.Db.Exec("UPDATE user_wallet SET user_id = $1, user_name = $2, wallet_name = $3, wallet_type = $4, balance = $5, created_at = $6 WHERE id = $7",
 		w.UserID, w.UserName, w.WalletName, w.WalletType, w.Balance, w.CreatedAt, w.ID,
 	)
+	if err != nil {
+		return err
+	}
 
-	return err
+	if count, _ := row.RowsAffected(); count == 0 {
+		return errors.New("no wallet found")
+	}
+
+	return nil
 }
 
 func (p *Postgres) DeleteWallet(id int) error {
