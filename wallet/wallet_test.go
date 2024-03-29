@@ -40,6 +40,10 @@ func (s StubWallet) CreateWallet(w Wallet) (Wallet, error) {
 	return w, nil
 }
 
+func (s StubWallet) UpdateWallet(w Wallet) error {
+	return nil
+}
+
 func TestWallet(t *testing.T) {
 	t.Run("given unable to get wallets should return 500 and error message", func(t *testing.T) {
 		c, rec := request(http.MethodGet, "/api/v1/wallets", nil)
