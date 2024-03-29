@@ -138,6 +138,17 @@ func (h *Handler) UpdateWalletHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, w)
 }
 
+// DeleteWalletHandler
+// @Summary		Delete wallet
+// @Description	Delete wallet
+// @Tags			wallet
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	object
+// @Router			/api/v1/wallets/{id} [delete]
+// @Param			id	path	int	true	"Wallet ID"
+// @Failure		500	{object}	Err
+// @Failure		400	{object}	Err
 func (h *Handler) DeleteWalletHandler(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
