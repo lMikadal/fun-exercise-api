@@ -119,8 +119,7 @@ func (h *Handler) UpdateWalletHandler(c echo.Context) error {
 	}
 
 	w.ID = id
-	err = h.store.UpdateWallet(w)
-	if err != nil {
+	if err := h.store.UpdateWallet(w); err != nil {
 		return c.JSON(http.StatusInternalServerError, Err{Message: err.Error()})
 	}
 
