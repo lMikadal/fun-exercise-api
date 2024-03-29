@@ -116,4 +116,39 @@ paths:
       summary: Create wallet
       tags:
       - wallet
+  /api/v1/wallets/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update wallet
+      parameters:
+      - description: Wallet ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Wallet object
+        in: body
+        name: wallet
+        required: true
+        schema:
+          $ref: '#/definitions/wallet.Wallet'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/wallet.Wallet'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/wallet.Err'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/wallet.Err'
+      summary: Update wallet
+      tags:
+      - wallet
 swagger: "2.0"

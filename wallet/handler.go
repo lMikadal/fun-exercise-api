@@ -107,6 +107,18 @@ func (h *Handler) CreateWalletHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, wallet)
 }
 
+// UpdateWalletHandler
+// @Summary		Update wallet
+// @Description	Update wallet
+// @Tags			wallet
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	Wallet
+// @Router			/api/v1/wallets/{id} [put]
+// @Param			id	path	int	true	"Wallet ID"
+// @Param			wallet	body	Wallet	true	"Wallet object"
+// @Failure		500	{object}	Err
+// @Failure		400	{object}	Err
 func (h *Handler) UpdateWalletHandler(c echo.Context) error {
 	w := Wallet{}
 	if err := c.Bind(&w); err != nil {
