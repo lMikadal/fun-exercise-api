@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"errors"
 	"time"
 
 	"github.com/KKGo-Software-engineering/fun-exercise-api/wallet"
@@ -96,4 +97,16 @@ func (p *Postgres) UpdateWallet(w wallet.Wallet) error {
 	)
 
 	return err
+}
+
+func (p *Postgres) DeleteWallet(id int) error {
+	row, err := p.Db.Exec("DELETE FROM user_wallet WHERE id = $1", id)
+	if err != nil {
+		return err
+	}
+	if count, _ := row.RowsAffected(); count == 0 {
+		return errors.New("no wallet found")
+	}
+
+	return nil
 }
