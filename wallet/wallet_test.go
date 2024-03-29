@@ -33,11 +33,10 @@ func (s StubWallet) WalletsByUserID(id int) ([]Wallet, error) {
 	return wallets, s.err
 }
 
-func (s StubWallet) CreateWallet(w Wallet) (Wallet, error) {
-	wallets := append(s.wallet, w)
-	_ = wallets
+func (s StubWallet) CreateWallet(w Wallet) error {
+	_ = append(s.wallet, w)
 
-	return w, nil
+	return nil
 }
 
 func (s StubWallet) UpdateWallet(w Wallet) error {
